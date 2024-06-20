@@ -5,6 +5,7 @@ import { sign } from '@hono/hono/jwt'
 
 import { validatorLoginUserIn, validatorRegisterUserIn } from '/routes/validators.ts'
 import { DenoKVClient } from "/databases/denokv/client.ts"
+import { getTimestamp } from '/routes/utils.ts'
 
 export const loginRoutes = new Hono()
 
@@ -13,7 +14,7 @@ loginRoutes.post('/login', validator('json', validatorLoginUserIn), async (c: Co
 
     const payload = {
       id: user.id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 20, // Token expires in 15 minutes
+      exp: getTimestamp(20),
     }
     const secret = Deno.env.get('SECRET') as string
     const token = await sign(payload, secret)
@@ -28,7 +29,7 @@ loginRoutes.post('/register', validator('json', validatorRegisterUserIn), async 
       const user = await client.createUser({ name, password })
       const payload = {
         id: user.id,
-        exp: Math.floor(Date.now() / 1000) + 60 * 20, // Token expires in 15 minutes
+        exp: getTimestamp(20),
       }
       const secret = Deno.env.get('SECRET') as string
       const token = await sign(payload, secret)

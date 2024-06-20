@@ -4,8 +4,6 @@ import { DenoKVClient } from "/databases/denokv/client.ts"
 
 
 export const validatorLoginUserIn = async (value: UserIn, c: Context) => {
-
-    console.log(value)
     try{
         if(!value.name || !value.password) throw new Error('Invalid user')
         const client = new DenoKVClient()
