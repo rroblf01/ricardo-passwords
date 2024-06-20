@@ -1,0 +1,13 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-net --allow-env --allow-read --unstable-kv --watch main.ts"
+  },
+  "imports": {
+    "./": "./",
+    "/": "./",
+    "@crypto/aes-gcm": "jsr:@crypto/aes-gcm@1.0.0",
+    "@hono/hono": "jsr:@hono/hono@4.4.5",
+    "@std/dotenv": "jsr:@std/dotenv@0.224.0",
+    "@std/encoding": "jsr:@std/encoding@0.224.3"
+  }
+}
