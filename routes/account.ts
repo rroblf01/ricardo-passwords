@@ -11,12 +11,12 @@ export const accountRoutes = new Hono()
 accountRoutes.post('/:accountId/decrypt', validator('json', validatorAccountDecryptIn), async (c) => {
     const {id} = c.get('jwtPayload')
     const {phrase} = c.req.valid('json')
+    const phraseToEncrypt = `${phrase}${Deno.env.get('SECRET_KEY')}`
     const { accountId } = c.req.param()
     try{
         const client = new DenoKVClient()
         const account = await client.getAccount(id, accountId)
-        account.password = await decrypt(account.password, phrase)
-        
+        account.password = await decrypt(account.password, phraseToEncrypt)
         return c.json(account)
     } catch (error) {
         return c.json({ error: error.message }, 400)
@@ -26,7 +26,8 @@ accountRoutes.post('/:accountId/decrypt', validator('json', validatorAccountDecr
 accountRoutes.post('/', validator('json', validatorAccountIn), async (c) => {
     const {service, email, username, password, phrase} = c.req.valid('json')
     const accountIn: AccountIn = {service, email, username, password}
-    accountIn.password = await encrypt(accountIn.password, phrase)
+    const phraseToEncrypt = `${phrase}${Deno.env.get('SECRET_KEY')}`
+    accountIn.password = await encrypt(accountIn.password, phraseToEncrypt)
 
     const {id} = c.get('jwtPayload')
 
