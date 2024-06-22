@@ -56,7 +56,6 @@ export class DenoKVClient extends DBClient {
         const user: User = {
             id,
             name: userIn.name,
-            password: userIn.password,
             accounts: []
         };
 

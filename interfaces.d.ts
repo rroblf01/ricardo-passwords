@@ -13,7 +13,7 @@ export declare interface AccountIn extends Omit<Account, 'id'> {}
 export declare interface User{
     id: string;
     name: string;
-    password: string;
+    password?: string;
     accounts: Account[];
 }
 
